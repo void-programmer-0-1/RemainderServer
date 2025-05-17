@@ -1,1 +1,1 @@
-gunicorn -c gunicorn.config.py server:server
+gunicorn -c gunicorn.config.py server:server --reload
