@@ -1,4 +1,3 @@
-from anyio import sleep
 from fastapi import APIRouter, Depends, HTTPException, status
 from schema.user_schema import CreateUserSchema, UpdateUserSchema
 from sqlalchemy.ext.asyncio import AsyncSession
