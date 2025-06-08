@@ -8,7 +8,13 @@ class AppSettings(BaseSettings):
     app_description: str = "Events and Task remainder server for you"
     jwt_secret_key: str
     jwt_algorithm: str
-    jwt_expiry: str
+    jwt_access_token_expiry_time: str
+    jwt_refresh_token_expiry_time: str
+    host: str
+    port: str
+    threads: int
+    workers: int
+    worker_class: str
 
     class Config:
         env_file = ".env"

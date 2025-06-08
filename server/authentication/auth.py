@@ -17,12 +17,32 @@ def verify_hashed_password(user_password: str, hashed_password: str) -> bool:
 def create_jwt_access_token(data: Dict[str, Any], expire_delta: timedelta = None) -> str:
     to_encode = data.copy()
     expire_delta = (datetime.now() +
-                    (expire_delta or timedelta(minutes=int(app_settings.jwt_expiry))))
+                    (expire_delta or timedelta(minutes=int(app_settings.jwt_access_token_expiry_time))))
     to_encode.update({
         "uid": data["uid"],
         "iss": "remainder_server",
+        "sub": "access token",
         "exp": int(expire_delta.timestamp())
     })
+    return jwt.encode(
+        payload=to_encode,
+        key=app_settings.jwt_secret_key,
+        algorithm=app_settings.jwt_algorithm
+    )
+
+
+def create_jwt_refresh_token(data: Dict[str, Any], expire_delta: timedelta = None) -> str:
+    to_encode = data.copy()
+    expire_delta = (datetime.now() +
+                    (expire_delta or timedelta(days=int(app_settings.jwt_refresh_token_expiry_time))))
+
+    to_encode.update({
+        "uid": data["uid"],
+        "iss": "remainder_server",
+        "sub": "refresh token",
+        "exp": int(expire_delta.timestamp())
+    })
+
     return jwt.encode(
         payload=to_encode,
         key=app_settings.jwt_secret_key,
